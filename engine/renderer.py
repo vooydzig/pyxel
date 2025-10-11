@@ -10,10 +10,10 @@ class BaseRenderer:
         self.screen = screen
         self.screen_size = pygame.Vector2(screen.get_size())
 
-    def render(self, entities: list, gui_widgets: list, screen: pygame.Surface):
-        self._render_entities(entities, screen)
-        self._render_gui(gui_widgets, screen)
-        self._post_process(screen)
+    def render(self, entities: list, gui_widgets: list):
+        self._render_entities(entities, self.screen)
+        self._render_gui(gui_widgets, self.screen)
+        self._post_process(self.screen)
 
     def update(self, dt):
         raise NotImplementedError
@@ -31,8 +31,8 @@ class BaseRenderer:
 
 
 class SingleFrameRenderer(BaseRenderer):
-    def render(self, entities: list, gui_widgets: list, screen: pygame.Surface):
-        screen.fill(pygame.Color(132, 165, 66))
+    def render(self, entities: list, gui_widgets: list):
+        self.screen.fill(pygame.Color(0, 0, 0))
         pygame.display.flip()
 
     def update(self, dt):
@@ -44,10 +44,13 @@ class UpscaledRenderer(BaseRenderer):
         self.frame_size = frame_size
         super().__init__(*args, **kwargs)
 
-    def render(self, entities: list, gui_widgets: list, screen: pygame.Surface):
+    def render(self, entities: list, gui_widgets: list):
         frame = pygame.Surface(self.frame_size)
-        screen.fill(pygame.Color(132, 165, 66))
-        super().render(entities, gui_widgets, frame)
+        frame.fill(pygame.Color(0, 0, 0))
+        self._render_entities(entities, frame)
+        scaled_frame = pygame.transform.scale(frame, self.screen.get_size())
+        self._render_gui(gui_widgets, scaled_frame)
+        self._post_process(scaled_frame)
 
     def update(self, dt):
         pass
@@ -61,10 +64,8 @@ class UpscaledRenderer(BaseRenderer):
             widget.render(frame)
 
     def _post_process(self, frame):
-        scaled_frame = pygame.transform.scale(frame, self.screen.get_size())
-        self.screen.blit(scaled_frame, (0, 0))
+        self.screen.blit(frame, (0, 0))
         pygame.display.flip()
-        self.frame = None
 
 
 class PutPixelRenderer(BaseRenderer):
@@ -72,14 +73,14 @@ class PutPixelRenderer(BaseRenderer):
         self.frame_size = frame_size
         super().__init__(*args, **kwargs)
 
-    def render(self, entities: list, gui_widgets: list, screen: pygame.Surface):
+    def render(self, entities: list, gui_widgets: list):
         frame = pygame.Surface(self.frame_size)
-        frame.fill(pygame.Color(132, 165, 66))
+        frame.fill(pygame.Color(0, 0, 0))
         super().render(entities, gui_widgets, frame)
         for x in range(frame.get_width()):
             for y in range(frame.get_height()):
                 color = frame.get_at((x, y))
-                screen.set_at((x, y), color)
+                self.screen.set_at((x, y), color)
         pygame.display.flip()
 
     def update(self, dt):

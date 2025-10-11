@@ -26,6 +26,7 @@ class Player(Sprite):
         if self.velocity.length() > 0:
             self.velocity = self.velocity.normalize()
         self.position += self.velocity  * self.speed * dt
+        super().update(dt)
 
     def move_up(self):
         self.velocity.y += -1
