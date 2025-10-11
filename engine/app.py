@@ -3,7 +3,8 @@ import pygame
 
 from engine.input import InputManager
 from game.player import Player
-from engine.ui import GUIManager, Label
+from engine.ui import GUIManager
+from engine.ui import widgets
 
 
 class App:
@@ -41,9 +42,10 @@ class App:
         )
         self.running = True
 
-        widget = Label(0, 0, 'Tomek', self.assets.get_asset('font', 'minecraft_12'))
-        self.player.attach_widget('name', widget, position_offset=(12, -20))
-        self.ui.add_widget('fps_label', Label(10, 10, 'FPS: 0', self.assets.get_asset('font', 'minecraft_12')))
+        widget = widgets.Label(0, 0, 'Tomek', self.assets.get_asset('font', 'minecraft_12'))
+        self.player.add_widget('name', widget, relative_position=pygame.Vector2(12, -20))
+        self.ui.add_widget('fps_label', widgets.Label(10, 10, 'FPS: 0', self.assets.get_asset('font', 'minecraft_12')))
+        self.ui.move_widget('fps_label', pygame.Vector2(10, self.screen_size.y - 20))
 
     def loop(self):
         self.clock.tick(self.fps)
@@ -57,7 +59,6 @@ class App:
             entity.update(self.clock.get_time(), self.input)
         self.renderer.update(self.clock.get_time())
         self.ui.get_widget('fps_label').set_text(f'FPS: {self.clock.get_fps():.2f}')
-        self.ui.get_widget('fps_label').set_position(10, self.screen_size.y - 20)
         self.ui.update(self.clock.get_time())
 
     def render(self):
@@ -76,3 +77,7 @@ class App:
                 self.input.on_key_down(event.key)
             if event.type == pygame.KEYUP:
                 self.input.on_key_up(event.key)
+
+    @property
+    def position(self):
+        return pygame.Vector2(0, 0)
