@@ -1,12 +1,12 @@
-from engine.app import App
+from game.app import GameApp
 from engine import conf
 from engine.assets import AssetManager
 from engine.renderer import UpscaledRenderer
 
-app = App(
+app = GameApp(
     conf.SCREEN_WIDTH,
     conf.SCREEN_HEIGHT,
-    "Blank app",
+    "Game",
     renderer=UpscaledRenderer(
         frame_size=(conf.CANVAS_WIDTH, conf.CANVAS_HEIGHT)
     ),
