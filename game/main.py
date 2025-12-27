@@ -10,7 +10,7 @@ app = GameApp(
     renderer=UpscaledRenderer(
         frame_size=(conf.CANVAS_WIDTH, conf.CANVAS_HEIGHT)
     ),
-    assets=AssetManager('./assets/'),
+    assets=AssetManager('../assets/'),
     fps=conf.FPS,
 )
 app.run()

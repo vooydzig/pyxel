@@ -6,7 +6,7 @@ from pygame import image
 class AssetManager:
     IMAGES = ['.png', '.jpg', '.jpeg', '.bmp', '.gif']
     FONTS = ['.ttf', '.otf']
-    FONT_SIZES = [12, 18, 24, 32, 48, 64]
+    FONT_SIZES = [4, 6, 8, 12, 18, 24, 32, 48, 64]
 
     def __init__(self, root_dir):
         self.root_dir = root_dir
@@ -18,6 +18,7 @@ class AssetManager:
 
     def initialize(self):
         self.assets['font']['default'] = pygame.font.SysFont('Arial', 18)
+        assert os.path.exists(self.root_dir)
         for dirpath, _, filenames in os.walk(self.root_dir):
             for filename in filenames:
                 filepath = os.path.join(dirpath, filename)
