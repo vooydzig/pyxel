@@ -1,9 +1,9 @@
-from engine.app import App
+from engine.app import GameApp
 from engine import conf
 from engine.assets import AssetManager
 from engine.renderer import UpscaledRenderer
 
-app = App(
+app = GameApp(
     conf.SCREEN_WIDTH,
     conf.SCREEN_HEIGHT,
     "My Application",

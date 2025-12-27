@@ -14,6 +14,3 @@ class Widget:
     def render(self, surface):
         if self.visible:
             pygame.draw.rect(surface, pygame.Color(255, 0, 0), (*self.position, *self.size), 2)
-
-    def set_position(self, x, y):
-        self.position = pygame.Vector2(x, y)
