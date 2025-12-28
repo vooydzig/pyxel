@@ -1,7 +1,7 @@
-from engine.app import App
-from engine import conf
-from engine.assets import AssetManager
-from engine.renderer import UpscaledRenderer
+from core.app import App
+from core import conf
+from core.assets import AssetManager
+from core.renderer import UpscaledRenderer
 
 app = App(
     conf.SCREEN_WIDTH,

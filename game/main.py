@@ -1,7 +1,7 @@
 from game.app import GameApp
-from engine import conf
-from engine.assets import AssetManager
-from engine.renderer import UpscaledRenderer
+from core import conf
+from core.assets import AssetManager
+from core.renderer import UpscaledRenderer
 
 app = GameApp(
     conf.SCREEN_WIDTH,

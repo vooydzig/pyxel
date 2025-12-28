@@ -1,7 +1,7 @@
 import pygame
 
-from engine.app import App
-from engine.ui import widgets
+from core.app import App
+from core.ui import widgets
 from game.player import Player
 
 

@@ -1,6 +1,6 @@
 import pygame
 
-from engine.entity.sprite import Sprite
+from core.entity.sprite import Sprite
 
 
 class Player(Sprite):

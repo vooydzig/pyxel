@@ -1,7 +1,7 @@
 import pygame
 
-from engine.entity import Entity
-from engine.ui import GUIManager
+from core.entity import Entity
+from core.ui import GUIManager
 
 
 class Sprite(Entity):

@@ -1,7 +1,7 @@
 import pygame
 
-from engine.input import InputManager
-from engine.ui import GUIManager
+from core.input import InputManager
+from core.ui import GUIManager
 
 
 class App:

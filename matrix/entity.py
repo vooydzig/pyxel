@@ -4,7 +4,7 @@ from typing import Any
 
 import pygame
 
-from engine.entity import Entity
+from core.entity import Entity
 
 DEFAULT_MOVE_SPEED = 30
 DEFAULT_CHANGE_SPEED = 30

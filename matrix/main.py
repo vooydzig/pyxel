@@ -1,6 +1,6 @@
-from engine import conf
-from engine.assets import AssetManager
-from engine.renderer import UpscaledRenderer, BaseRenderer
+from core import conf
+from core.assets import AssetManager
+from core.renderer import UpscaledRenderer, BaseRenderer
 
 from app import MatrixApp
 

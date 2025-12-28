@@ -1,6 +1,6 @@
 import pygame
 
-from engine.ui.widgets import Widget
+from core.ui.widgets import Widget
 
 
 class Label(Widget):

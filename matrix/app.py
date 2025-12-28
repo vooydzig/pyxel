@@ -1,6 +1,6 @@
 import random
 
-from engine.app import App
+from core.app import App
 from entity import Stream
 
 
