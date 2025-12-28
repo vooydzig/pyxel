@@ -6,6 +6,9 @@ import pygame
 
 from engine.entity import Entity
 
+DEFAULT_MOVE_SPEED = 30
+DEFAULT_CHANGE_SPEED = 30
+
 
 class TextEntity(Entity):
     def __init__(self, text, font, color=pygame.Color(255, 255, 255), position=(0, 0)):
@@ -30,11 +33,15 @@ class TextEntity(Entity):
 
 
 class MatrixCharacter(TextEntity):
-    DEFAULT_MOVE_SPEED = 16 * 30
-    DEFAULT_CHANGE_SPEED = 16 * 30
 
-    def __init__(self, font, move_speed=16 * 30, change_speed=16 * 30, color=pygame.Color(255, 255, 255),
-                 position=(0, 0)):
+    def __init__(
+            self,
+            font,
+            move_speed=DEFAULT_MOVE_SPEED,
+            change_speed=DEFAULT_CHANGE_SPEED,
+            color=pygame.Color(255, 255, 255),
+            position=(0, 0),
+    ):
         self.alphabet = string.ascii_letters + string.digits
         self.move_counter = move_speed
         self.change_counter = change_speed
@@ -51,8 +58,8 @@ class MatrixCharacter(TextEntity):
         self.text = random.choice(self.alphabet)
 
     def update(self, dt, input_manager=None):
-        self.move_counter -= dt
-        self.change_counter -= dt
+        self.move_counter -= 1
+        self.change_counter -= 1
         if self.move_counter < 0:
             self.move()
         if self.change_counter < 0:
@@ -65,8 +72,8 @@ class Stream(Entity):
     WHITE_DENSITY = 0.25
 
     def __init__(self, font, stream_length=16, color=pygame.Color(0, 255, 70), position=(0, 0)):
-        self.move_speed = 16 * random.randint(15, 60)
-        self.change_speed = 16 * random.randint(15, 60)
+        self.move_speed = random.randint(15, 60)
+        self.change_speed = random.randint(15, 60)
         self.stream_length = stream_length
         self.font = font
         self.color = color

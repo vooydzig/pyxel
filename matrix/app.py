@@ -6,7 +6,7 @@ from entity import Stream
 
 class MatrixApp(App):
     FONT_SIZE = 24
-    SPAWN_SPEED = 16 * 60
+    SPAWN_SPEED = 60
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,8 +23,7 @@ class MatrixApp(App):
 
     def _update_entities(self):
         super()._update_entities()
-        dt = self.clock.get_time()
-        self.spawn_counter -= dt
+        self.spawn_counter -= 1
         if self.spawn_counter <= 0:
             self.spawn_counter = self.SPAWN_SPEED
             x_delta = random.randint(0, self.streams_count)
