@@ -70,6 +70,10 @@ class App:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 self.running = False
             if event.type == pygame.KEYDOWN:
-                self.input.on_key_down(event.key)
+                self.input.keyboard.on_key_down(event.key)
             if event.type == pygame.KEYUP:
-                self.input.on_key_up(event.key)
+                self.input.keyboard.on_key_up(event.key)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.input.mouse.on_key_down(event.button)
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.input.mouse.on_key_up(event.button)

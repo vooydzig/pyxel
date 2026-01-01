@@ -6,6 +6,10 @@ class BaseRenderer:
         self.screen = None
         self.screen_size = None
 
+    @property
+    def canvas_size(self):
+        return pygame.math.Vector2(self.screen.get_size())
+
     def set_destiation(self, screen: pygame.Surface):
         self.screen = screen
         self.screen_size = pygame.Vector2(screen.get_size())
@@ -44,6 +48,10 @@ class UpscaledRenderer(BaseRenderer):
     def __init__(self, frame_size, *args, **kwargs):
         self.frame_size = frame_size
         super().__init__(*args, **kwargs)
+
+    @property
+    def canvas_size(self):
+        return pygame.math.Vector2(self.frame_size)
 
     def render(self, entities: list, gui_widgets: list):
         frame = pygame.Surface(self.frame_size)
