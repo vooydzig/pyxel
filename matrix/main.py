@@ -12,7 +12,7 @@ app = MatrixApp(
     renderer=BaseRenderer(
         frame_size=(conf.CANVAS_WIDTH, conf.CANVAS_HEIGHT)
     ),
-    assets=AssetManager('../assets/'),
+    asset_manager=AssetManager('../assets/'),
     fps=conf.FPS,
 )
 app.run()

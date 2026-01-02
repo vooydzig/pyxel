@@ -1,11 +1,13 @@
 import pygame
 
+from core.assets import AssetManager
 from core.input import InputManager
+from core.renderer import BaseRenderer
 from core.ui import GUIManager
 
 
 class App:
-    def __init__(self, width, height, title, renderer=None, assets=None, fps=60):
+    def __init__(self, width: float, height: float, title: str, renderer:BaseRenderer=None, asset_manager:AssetManager=None, fps:int=60):
         pygame.init()
         self.screen_size = pygame.Vector2(width, height)
         self.screen = pygame.display.set_mode((width, height))
@@ -14,7 +16,7 @@ class App:
         self.running = False
         self.input = InputManager()
         self.renderer = renderer
-        self.assets = assets
+        self.asset_manager = asset_manager
         self.ui = GUIManager()
         self.player = None
         self.entities = []
@@ -28,8 +30,8 @@ class App:
 
     def initialize(self):
         self.renderer.set_destiation(self.screen)
-        if self.assets:
-            self.assets.initialize()
+        if self.asset_manager:
+            self.asset_manager.initialize()
         self.running = True
 
     def loop(self):

@@ -8,7 +8,7 @@ class AssetManager:
     FONTS = ['.ttf', '.otf']
     FONT_SIZES = [4, 6, 8, 12, 18, 24, 32, 48, 64]
 
-    def __init__(self, root_dir):
+    def __init__(self, root_dir:str):
         self.root_dir = root_dir
         self.assets = {
             'image': {},
@@ -31,13 +31,13 @@ class AssetManager:
                         self._load_font(font_key, filepath, size)
                     self._load_font(name, filepath, 18)  # Default size
 
-    def _load_image(self, name, path):
+    def _load_image(self, name:str, path:str):
         self.assets['image'][name] = image.load(path)
 
-    def _load_font(self, name, font_name, font_size):
+    def _load_font(self, name:str, font_name:str, font_size:int):
         self.assets['font'][name] = pygame.font.Font(font_name, font_size)
 
-    def get_asset(self, asset_type, name):
+    def get_asset(self, asset_type:str, name:str):
         return self.assets.get(asset_type, {}).get(name)
 
     def list_assets(self):

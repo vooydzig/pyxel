@@ -18,7 +18,7 @@ class MatrixApp(App):
         for i in range(self.streams_count):
             y_delta = random.randint(-50 * self.FONT_SIZE, 50 * self.FONT_SIZE)
             self.entities.append(
-                Stream(self.assets.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=(i * self.FONT_SIZE, y_delta)),
+                Stream(self.asset_manager.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=(i * self.FONT_SIZE, y_delta)),
             )
 
     def _update_entities(self):
@@ -29,7 +29,7 @@ class MatrixApp(App):
             x_delta = random.randint(0, self.streams_count)
             y_delta = random.randint(-50 * self.FONT_SIZE, 50 * self.FONT_SIZE)
             self.entities.append(
-                Stream(self.assets.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=(x_delta * self.FONT_SIZE, y_delta)),
+                Stream(self.asset_manager.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=(x_delta * self.FONT_SIZE, y_delta)),
             )
 
         for entity in self.entities:

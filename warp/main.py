@@ -13,7 +13,7 @@ app = WarpspeedApp(
     renderer=BaseRenderer(
         frame_size=(800, 600)
     ),
-    assets=AssetManager('../assets/'),
+    asset_manager=AssetManager('../assets/'),
     fps=conf.FPS,
 )
 app.run()

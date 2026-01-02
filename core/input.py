@@ -9,19 +9,19 @@ class Device:
     def update(self):
         self.last_frame_keys = self.current_frame_keys.copy()
 
-    def on_key_down(self, key):
+    def on_key_down(self, key: int):
         self.current_frame_keys.add(key)
 
-    def on_key_up(self, key):
+    def on_key_up(self, key: int):
         self.current_frame_keys.discard(key)
 
-    def is_key_pressed(self, key):
+    def is_key_pressed(self, key: int):
         return key in self.current_frame_keys and key not in self.last_frame_keys
 
-    def is_key_released(self, key):
+    def is_key_released(self, key: int):
         return key not in self.current_frame_keys and key in self.last_frame_keys
 
-    def is_key_held(self, key):
+    def is_key_held(self, key: int):
         return key in self.current_frame_keys and key in self.last_frame_keys
 
 
@@ -47,21 +47,21 @@ class InputManager:
     def update(self):
         self.mouse.update()
         self.keyboard.update()
-        
-    def is_key_pressed(self, key):
+
+    def is_key_pressed(self, key: int):
         return self.keyboard.is_key_pressed(key)
 
-    def is_key_released(self, key):
+    def is_key_released(self, key: int):
         return self.keyboard.is_key_released(key)
 
-    def is_key_held(self, key):
+    def is_key_held(self, key: int):
         return self.keyboard.is_key_held(key)
 
-    def is_button_pressed(self, button):
+    def is_button_pressed(self, button: int):
         return self.mouse.is_key_pressed(button)
 
-    def is_button_released(self, button):
+    def is_button_released(self, button: int):
         return self.mouse.is_key_released(button)
 
-    def is_mouse_held(self, button):
+    def is_mouse_held(self, button: int):
         return self.mouse.is_key_held(button)
