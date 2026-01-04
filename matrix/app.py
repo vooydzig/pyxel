@@ -1,5 +1,7 @@
 import random
 
+import pygame
+
 from core.app import App
 from entity import Stream
 
@@ -17,8 +19,9 @@ class MatrixApp(App):
         super().initialize()
         for i in range(self.streams_count):
             y_delta = random.randint(-50 * self.FONT_SIZE, 50 * self.FONT_SIZE)
+            position = pygame.Vector2(i * self.FONT_SIZE, y_delta)
             self.entities.append(
-                Stream(self.asset_manager.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=(i * self.FONT_SIZE, y_delta)),
+                Stream(self.asset_manager.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=position),
             )
 
     def _update_entities(self):
@@ -28,8 +31,9 @@ class MatrixApp(App):
             self.spawn_counter = self.SPAWN_SPEED
             x_delta = random.randint(0, self.streams_count)
             y_delta = random.randint(-50 * self.FONT_SIZE, 50 * self.FONT_SIZE)
+            position = pygame.Vector2(x_delta * self.FONT_SIZE, y_delta)
             self.entities.append(
-                Stream(self.asset_manager.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=(x_delta * self.FONT_SIZE, y_delta)),
+                Stream(self.asset_manager.get_asset('font', f'minecraft_{self.FONT_SIZE}'), position=position),
             )
 
         for entity in self.entities:

@@ -7,8 +7,7 @@ class Star(Entity):
     SPEED = 0.5
 
     def __init__(self, name, position):
-        super().__init__(name, None)
-        self.position = position
+        super().__init__(name, None, position)
         self.pz = self.position.z
         self.size = 4
 
@@ -19,11 +18,11 @@ class Star(Entity):
         pygame.draw.line(surface, (255, 255, 255), coords_2d, prev_coords_2d, self.size)
         self.pz = self.position.z
 
-    def update(self, dt, input):
+    def update(self, dt, input_manager=None):
         speed = self.SPEED
-        if input.is_mouse_held(pygame.BUTTON_LEFT):
+        if input_manager.is_mouse_held(pygame.BUTTON_LEFT):
             speed *= 2
-        elif input.is_mouse_held(pygame.BUTTON_RIGHT):
+        elif input_manager.is_mouse_held(pygame.BUTTON_RIGHT):
             speed /= 2
         self.position.z -= speed
 

@@ -11,7 +11,7 @@ class Player(Sprite):
         pygame.K_d: 'move_right',
     }
 
-    def __init__(self, name, asset, position=(0, 0), speed=0.2):
+    def __init__(self, name, asset, position=pygame.Vector2(), speed=0.2):
         super().__init__(name, asset, position)
         self.speed = speed
         self.velocity = pygame.Vector2(0, 0)

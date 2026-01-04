@@ -11,10 +11,9 @@ DEFAULT_CHANGE_SPEED = 30
 
 
 class TextEntity(Entity):
-    def __init__(self, text, font, color=pygame.Color(255, 255, 255), position=(0, 0)):
-        self.position = pygame.Vector2(position)
+    def __init__(self, text, font, color=pygame.Color(255, 255, 255), position=pygame.Vector2()):
         self.color = color
-        super().__init__(text, font)
+        super().__init__(text, font, position)
 
     @property
     def text(self):
@@ -40,7 +39,7 @@ class MatrixCharacter(TextEntity):
             move_speed=DEFAULT_MOVE_SPEED,
             change_speed=DEFAULT_CHANGE_SPEED,
             color=pygame.Color(255, 255, 255),
-            position=(0, 0),
+            position=pygame.Vector2(),
     ):
         self.alphabet = string.ascii_letters + string.digits
         self.move_counter = move_speed
@@ -71,15 +70,15 @@ class MatrixCharacter(TextEntity):
 class Stream(Entity):
     WHITE_DENSITY = 0.25
 
-    def __init__(self, font, stream_length=16, color=pygame.Color(0, 255, 70), position=(0, 0)):
+    def __init__(self, font, stream_length=16, color=pygame.Color(0, 255, 70), position=pygame.Vector2()):
+        super().__init__(None, font, position)
         self.move_speed = random.randint(15, 60)
         self.change_speed = random.randint(15, 60)
         self.stream_length = stream_length
-        self.font = font
         self.color = color
-        self._generate_stream(position)
+        self._generate_stream()
 
-    def _generate_stream(self, position: tuple[int, int] | Any):
+    def _generate_stream(self):
         self.characters = []
         delta = 0
         for i in range(self.stream_length):
@@ -91,7 +90,7 @@ class Stream(Entity):
                 move_speed=self.move_speed,
                 change_speed=self.change_speed,
                 color=c,
-                position=(position[0], position[1] + delta)
+                position=pygame.Vector2(self.position.x, self.position.y + delta)
             ))
             delta -= self.font.size(self.characters[-1].text)[1]
 
@@ -102,3 +101,7 @@ class Stream(Entity):
     def update(self, dt, input_manager=None):
         for character in self.characters:
             character.update(dt, input_manager)
+
+    @property
+    def font(self):
+        return self.asset

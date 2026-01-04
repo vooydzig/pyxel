@@ -5,11 +5,10 @@ from core.ui import GUIManager
 
 
 class Sprite(Entity):
-    def __init__(self, name, asset, position=(0, 0), size=pygame.Vector2(64, 64)):
+    def __init__(self, name, asset, position=pygame.Vector2(), size=pygame.Vector2(64, 64)):
         self.size = size
-        self.position = pygame.Vector2(position)
         self.gui = GUIManager(self)
-        super().__init__(name, pygame.transform.scale(asset, self.size))
+        super().__init__(name, pygame.transform.scale(asset, self.size), position)
 
     def render(self, surface):
         surface.blit(self.asset, self.position)
