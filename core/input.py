@@ -34,6 +34,10 @@ class Mouse(Device):
         self.delta = pygame.Vector2(0, 0)
         self.wheel = pygame.Vector2(0, 0)
 
+    def update(self):
+        super().update()
+        self.position = pygame.Vector2(pygame.mouse.get_pos())
+
 
 class Keyboard(Device):
     ...
