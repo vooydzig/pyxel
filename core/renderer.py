@@ -18,13 +18,16 @@ class BaseRenderer:
         self.screen_size = pygame.Vector2(screen.get_size())
 
     def render(self, entities: list[Entity], gui_widgets: list[Widget]):
-        self.screen.fill(pygame.Color(0, 0, 0))
+        self._render_background()
         self._render_entities(entities, self.screen)
         self._render_gui(gui_widgets, self.screen)
         self._post_process(self.screen)
 
     def update(self, dt:float):
         pass
+
+    def _render_background(self):
+        self.screen.fill(pygame.Color(0, 0, 0))
 
     def _render_entities(self, entities:list[Entity], frame:pygame.Surface):
         for entity in entities:
