@@ -3,22 +3,40 @@ import pygame
 from core.entity import Entity
 from core.ui.widgets import Widget
 
+class Background:
+    def __init__(self):
+        self.color = pygame.Color(0, 0, 0)
+
+    def render(self, screen: pygame.Surface):
+        screen.fill(self.color)
 
 class BaseRenderer:
     def __init__(self, *args, **kwargs):
         self.screen = None
         self.screen_size = None
+        self._background = None
+        self._default_background = Background()
 
     @property
     def canvas_size(self):
         return pygame.math.Vector2(self.screen.get_size())
+
+    @property
+    def background(self):
+        if self._background is None:
+            return self._default_background
+        return self._background
+
+    @background.setter
+    def background(self, background: Background):
+        self._background = background
 
     def set_destiation(self, screen: pygame.Surface):
         self.screen = screen
         self.screen_size = pygame.Vector2(screen.get_size())
 
     def render(self, entities: list[Entity], gui_widgets: list[Widget]):
-        self._render_background()
+        self._render_background(self.screen)
         self._render_entities(entities, self.screen)
         self._render_gui(gui_widgets, self.screen)
         self._post_process(self.screen)
@@ -26,8 +44,8 @@ class BaseRenderer:
     def update(self, dt:float):
         pass
 
-    def _render_background(self):
-        self.screen.fill(pygame.Color(0, 0, 0))
+    def _render_background(self, frame: pygame.Surface):
+        self.background.render(frame)
 
     def _render_entities(self, entities:list[Entity], frame:pygame.Surface):
         for entity in entities:
@@ -43,7 +61,7 @@ class BaseRenderer:
 
 class SingleFrameRenderer(BaseRenderer):
     def render(self, entities: list[Entity], gui_widgets: list[Widget]):
-        self.screen.fill(pygame.Color(0, 0, 0))
+        self._render_background(self.screen)
         pygame.display.flip()
 
     def update(self, dt:float):
@@ -61,7 +79,7 @@ class UpscaledRenderer(BaseRenderer):
 
     def render(self, entities: list[Entity], gui_widgets: list[Widget]):
         frame = pygame.Surface(self.frame_size)
-        frame.fill(pygame.Color(0, 0, 0))
+        self._render_background(frame)
         self._render_entities(entities, frame)
         scaled_frame = pygame.transform.scale(frame, self.screen.get_size())
         self._render_gui(gui_widgets, scaled_frame)
