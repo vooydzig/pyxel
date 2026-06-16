@@ -1,4 +1,4 @@
-from game.app import GameApp
+from examples.game.app import GameApp
 from core import conf
 from core.assets import AssetManager
 from core.renderer import UpscaledRenderer
@@ -10,7 +10,7 @@ app = GameApp(
     renderer=UpscaledRenderer(
         frame_size=(conf.CANVAS_WIDTH, conf.CANVAS_HEIGHT)
     ),
-    asset_manager=AssetManager('../assets/'),
+    asset_manager=AssetManager('../../assets/'),
     fps=conf.FPS,
 )
 app.run()

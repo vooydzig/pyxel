@@ -13,7 +13,7 @@ app = ParticlesApp(
     # renderer=BaseRenderer(
         frame_size=(800, 600)
     ),
-    asset_manager=AssetManager('../assets/'),
+    asset_manager=AssetManager('../../assets/'),
     fps=conf.FPS,
 )
 app.run()

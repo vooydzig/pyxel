@@ -2,7 +2,7 @@ import pygame
 
 from core.app import App
 from core.ui import widgets
-from game.player import Player
+from examples.game.player import Player
 
 
 class GameApp(App):

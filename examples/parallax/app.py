@@ -1,5 +1,5 @@
 from core.app import App
-from parallax.background import MountainRange
+from examples.parallax.background import MountainRange
 
 
 class ParallaxApp(App):
