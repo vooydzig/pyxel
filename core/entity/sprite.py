@@ -5,10 +5,16 @@ from core.ui import GUIManager
 
 
 class Sprite(Entity):
-    def __init__(self, name, asset, position=pygame.Vector2(), size=pygame.Vector2(64, 64)):
-        self.size = size
+    def __init__(self, name, asset=None, position=pygame.Vector2(), size=None):
         self.gui = GUIManager(self)
-        super().__init__(name, pygame.transform.scale(asset, self.size), position)
+        if asset:
+            self.size = pygame.Vector2(asset.get_size())
+        if asset and size:
+            self.size = size
+            super().__init__(name, pygame.transform.scale(asset, self.size), position)
+        else:
+            super().__init__(name, asset, position)
+
 
     def render(self, surface):
         surface.blit(self.asset, self.position)
