@@ -4,8 +4,8 @@ from core.entity import Entity
 from core.ui.widgets import Widget
 
 class Background:
-    def __init__(self):
-        self.color = pygame.Color(0, 0, 0)
+    def __init__(self, color=pygame.Color(0, 0, 0)):
+        self.color = color
 
     def render(self, screen: pygame.Surface):
         screen.fill(self.color)
