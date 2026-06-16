@@ -1,4 +1,4 @@
-from examples.game.app import GameApp
+from examples.player.app import GameApp
 from core import conf
 from core.assets import AssetManager
 from core.renderer import UpscaledRenderer
