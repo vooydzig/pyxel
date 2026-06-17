@@ -1,7 +1,6 @@
-import math
-
 import pygame
 from core.entity.sprite import Sprite
+from games.ships import conf
 
 class Player(Sprite):
     ACTIONS = {
@@ -20,6 +19,7 @@ class Player(Sprite):
         self.turn_speed = 0.1
         self.direction = pygame.Vector2(0, 1)
         self.trail = None
+        self.collision_radius = max(self.size.xy)/2
 
     def update(self, dt, input_manager=None):
         if input_manager:
@@ -37,6 +37,7 @@ class Player(Sprite):
         super().update(dt)
 
     def render(self, surface):
+        # pygame.draw.circle(surface, pygame.Color(conf.COLORS['green']), self.position, self.collision_radius)
         self.trail.render(surface)
         self._blit_rotated(surface)
         self.gui.render(surface)
@@ -45,6 +46,9 @@ class Player(Sprite):
         rotated_image = pygame.transform.rotate(self.asset, self.current_angle)
         new_rect = rotated_image.get_rect(center=rotated_image.get_rect(center=self.position).center)
         surface.blit(rotated_image, new_rect)
+
+    def full_stop(self):
+        self.current_speed=0
 
     def speed_up(self, dt):
         self.current_speed = min(self.max_speed, self.current_speed + self.acceleration * dt)

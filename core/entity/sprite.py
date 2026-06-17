@@ -17,7 +17,7 @@ class Sprite(Entity):
 
 
     def render(self, surface):
-        surface.blit(self.asset, self.position)
+        surface.blit(self.asset, self.position - self.size / 2)
         self.gui.render(surface)
 
     def update(self, dt, input_manager=None):
