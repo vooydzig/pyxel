@@ -17,3 +17,11 @@ ISLANDS = [
     ("Cape Fear", (100, 100,), 'small'),
     ("Bona Ventura", (500, 600,), 'tiny'),
 ]
+
+
+BOOTEY = [
+    ("Shipwreck", (200, 200), "shipwreck"),
+    ("Sailor", (200, 300), "castaway"),
+    ("Trash", (200, 400), "trash"),
+    ("Bottle", (200, 500), "bottle"),
+]

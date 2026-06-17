@@ -1,9 +1,11 @@
+import random
+
 import pygame
 
 from core.app import App
 from core.renderer import Background
 from core.ui import widgets
-from games.ships.island import Island, IslandSize
+from games.ships.island import Island, IslandSize, Bootey
 from games.ships.player import Player
 from games.ships.trail import Trail
 from games.ships import conf
@@ -17,34 +19,79 @@ class BootyCallsApp(App):
         self.player.position = self.renderer.canvas_size / 2
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
         self.entities.append(self.player)
-
         self.islands = []
+        self.bootey = []
         self._setup_islands()
+        self._setup_bootey()
         self.entities.extend(self.islands)
+        self.entities.extend(self.bootey)
+
+        self.active_event = None
+        self.player_is_docked = False
 
     def _update_entities(self):
         super()._update_entities()
+        self.handle_collision(self.islands, self.handle_event)
+        self.handle_collision(self.bootey, self.handle_event)
+
+    def handle_collision(self, entities, event_handler):
         min_distance = conf.INFINITY
-        nearest_island = None
-        for island in self.islands:
-            d = self.player.position.distance_to(island.position)
+        nearest_entity = None
+        for entity in entities:
+            d = self.player.position.distance_to(entity.position)
             if d < min_distance:
                 min_distance = d
-                nearest_island = island
-            if d < island.collision_radius + self.player.collision_radius:
+                nearest_entity = entity
+            if d < entity.collision_radius + self.player.collision_radius:
                 self.player.full_stop()
-        boarding_distance = nearest_island.collision_radius + self.player.collision_radius
+        boarding_distance = nearest_entity.collision_radius + self.player.collision_radius
+        if min_distance > boarding_distance:
+            self.player_is_docked = False
         if min_distance < boarding_distance and self.input.is_key_held(pygame.K_e):
-            print(f'Docking {nearest_island.name}')
+            event_handler(nearest_entity)
+
+    def update(self):
+        self._update_input()
+        if self.active_event:
+            if self.input.is_key_held(pygame.K_SPACE):
+                self.active_event = None
+                self.ui.remove_widget('active_event')
+        else:
+            self._update_entities()
+            self._update_renderer()
+            self._update_ui()
 
     def _setup_islands(self):
-        for i_conf in conf.ISLANDS:
+        for _island in conf.ISLANDS:
             i = Island(
-                i_conf[0],
+                _island[0],
                 self.asset_manager.get_asset('image', 'island_2'),
-                i_conf[1],
-                IslandSize.from_string(i_conf[2]),
+                _island[1],
+                IslandSize.from_string(_island[2]),
             )
             widget = widgets.Label(0, 0, i.name, self.asset_manager.get_asset('font', 'minecraft_18'))
             i.add_widget('name', widget, relative_position=pygame.Vector2(-widget.size.x / 2, i.collision_radius))
             self.islands.append(i)
+
+    def _setup_bootey(self):
+        for _bootey in conf.BOOTEY:
+            b = Bootey(
+                _bootey[0],
+                self.asset_manager.get_asset('image', _bootey[2]),
+                _bootey[1],
+            )
+            self.bootey.append(b)
+
+    def handle_event(self, entity):
+        if self.player_is_docked:
+            return
+        self.player_is_docked = True
+        self.player.full_stop()
+        if not entity.events:
+            self.active_event = "Nothing interesting here."
+        else:
+            event_id = random.randrange(0, len(entity.events))
+            self.active_event = entity.events.pop(event_id)
+        self.ui.add_widget('active_event', widgets.Label(
+            0, 0 , self.active_event, self.asset_manager.get_asset('font', 'minecraft_18')
+        ), relative_position=pygame.Vector2(0, self.screen_size.y-18))

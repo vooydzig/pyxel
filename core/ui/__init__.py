@@ -18,6 +18,12 @@ class GUIManager:
         self._widget_relative_positions[name] = relative_position
         self._widgets[name] = widget
 
+    def remove_widget(self, name):
+        if name not in self._widgets:
+            raise ValueError(f"Widget with name '{name}' does not exist.")
+        del self._widgets[name]
+        del self._widget_relative_positions[name]
+
     def get_widget(self, name):
         return self._widgets.get(name)
 
