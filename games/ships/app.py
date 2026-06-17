@@ -2,6 +2,7 @@ import pygame
 
 from core.app import App
 from core.renderer import Background
+from core.ui import widgets
 from games.ships.island import Island, IslandSize
 from games.ships.player import Player
 from games.ships.trail import Trail
@@ -15,34 +16,10 @@ class BootyCallsApp(App):
         self.player = Player('player', self.asset_manager.get_asset('image', 'ship (1)'))
         self.player.position = self.renderer.canvas_size / 2
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
-        self.islands = [
-            Island(
-                'Cape Vista',
-                self.asset_manager.get_asset('image', 'island_2'),
-                self.renderer.canvas_size / 8,
-                IslandSize.SMALL
-            ),
-            Island(
-                'Bona Ventura',
-                self.asset_manager.get_asset('image', 'island_2'),
-                pygame.Vector2(self.renderer.canvas_size.x / 8 * 7, self.renderer.canvas_size.y / 8),
-                IslandSize.SMALL
-            ),
-            Island(
-                'Tralla Lala',
-                self.asset_manager.get_asset('image', 'island_2'),
-                pygame.Vector2(self.renderer.canvas_size.x / 8 * 7, self.renderer.canvas_size.y / 8 * 7),
-                IslandSize.SMALL
-            ),
-            Island(
-                'Concordia',
-                self.asset_manager.get_asset('image', 'island_2'),
-                pygame.Vector2(self.renderer.canvas_size.x / 8 , self.renderer.canvas_size.y / 8 * 7),
-                IslandSize.SMALL
-            ),
-
-        ]
         self.entities.append(self.player)
+
+        self.islands = []
+        self._setup_islands()
         self.entities.extend(self.islands)
 
     def _update_entities(self):
@@ -59,3 +36,15 @@ class BootyCallsApp(App):
         boarding_distance = nearest_island.collision_radius + self.player.collision_radius
         if min_distance < boarding_distance and self.input.is_key_held(pygame.K_e):
             print(f'Docking {nearest_island.name}')
+
+    def _setup_islands(self):
+        for i_conf in conf.ISLANDS:
+            i = Island(
+                i_conf[0],
+                self.asset_manager.get_asset('image', 'island_2'),
+                i_conf[1],
+                IslandSize.from_string(i_conf[2]),
+            )
+            widget = widgets.Label(0, 0, i.name, self.asset_manager.get_asset('font', 'minecraft_18'))
+            i.add_widget('name', widget, relative_position=pygame.Vector2(-widget.size.x / 2, i.collision_radius))
+            self.islands.append(i)
