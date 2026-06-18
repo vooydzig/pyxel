@@ -5,7 +5,7 @@ from core.entity.sprite import Sprite
 
 class Trail(Sprite):
     def __init__(self, asset, position):
-        super().__init__('trail', asset, position)
+        super().__init__('trail', asset, pygame.Vector2())
         self.points = []
         self.max_points = 10
         self.thickness = 40
@@ -46,6 +46,7 @@ class Trail(Sprite):
             surface.blit(rotated_texture, rect.topleft)
 
     def update(self, dt, input_manager=None):
+        self.position = self.points[0].copy()
         if len(self.points) > self.max_points:
             self.pop_point()
         elif self.timer > self.ttl:
