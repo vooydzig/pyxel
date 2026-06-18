@@ -24,13 +24,7 @@ class IslandSize(enum.Enum):
 class Island(Sprite):
     def __init__(self, name, asset, position, island_size: IslandSize):
         super().__init__(name, asset, position, pygame.Vector2(island_size.value))
-        self.collision_radius = max(self.size.xy) / 2
         self.events = random.sample(ISLAND_EVENTS, 2)
-
-    def render(self, surface):
-        # pygame.draw.circle(surface, pygame.Color(conf.COLORS['white']), self.position, self.collision_radius)
-        super().render(surface)
-
 
 class BooteyType(enum.Enum):
     CASTAWAY = 'castaway'
@@ -50,8 +44,4 @@ class BooteyType(enum.Enum):
 class Bootey(Sprite):
     def __init__(self, name, asset=None, position=pygame.Vector2()):
         super().__init__(name, asset, position, pygame.Vector2(64, 64))
-        self.collision_radius = max(self.size.xy) / 2
         self.events = random.sample(SEA_EVENTS, 1)
-
-    def render(self, surface):
-        super().render(surface)

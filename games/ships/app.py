@@ -19,10 +19,8 @@ class BootyCallsApp(App):
         self.player.position = self.renderer.canvas_size / 2
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
         self.entities.append(self.player)
-        self.islands = []
-        self.bootey = []
-        self._setup_islands()
-        self._setup_bootey()
+        self.islands = self._setup_islands()
+        self.bootey = self._setup_bootey()
         self.entities.extend(self.islands)
         self.entities.extend(self.bootey)
 
@@ -62,6 +60,7 @@ class BootyCallsApp(App):
             self._update_ui()
 
     def _setup_islands(self):
+        islands = []
         for _island in conf.ISLANDS:
             i = Island(
                 _island[0],
@@ -71,16 +70,19 @@ class BootyCallsApp(App):
             )
             widget = widgets.Label(0, 0, i.name, self.asset_manager.get_asset('font', 'minecraft_18'))
             i.add_widget('name', widget, relative_position=pygame.Vector2(-widget.size.x / 2, i.collision_radius))
-            self.islands.append(i)
+            islands.append(i)
+        return islands
 
     def _setup_bootey(self):
+        bootey = []
         for _bootey in conf.BOOTEY:
             b = Bootey(
                 _bootey[0],
                 self.asset_manager.get_asset('image', _bootey[2]),
                 _bootey[1],
             )
-            self.bootey.append(b)
+            bootey.append(b)
+        return bootey
 
     def handle_event(self, entity):
         if self.player_is_docked:

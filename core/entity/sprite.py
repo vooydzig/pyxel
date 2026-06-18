@@ -7,6 +7,7 @@ from core.ui import GUIManager
 class Sprite(Entity):
     def __init__(self, name, asset=None, position=pygame.Vector2(), size=None):
         self.gui = GUIManager(self)
+        self.collision_radius = 0
         if asset:
             self.size = pygame.Vector2(asset.get_size())
         if asset and size:
@@ -14,6 +15,8 @@ class Sprite(Entity):
             super().__init__(name, pygame.transform.scale(asset, self.size), position)
         else:
             super().__init__(name, asset, position)
+        if self.size:
+            self.collision_radius = max(self.size.xy) / 2
 
 
     def render(self, surface):

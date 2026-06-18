@@ -1,6 +1,5 @@
 import pygame
 from core.entity.sprite import Sprite
-from games.ships import conf
 
 class Player(Sprite):
     ACTIONS = {
@@ -19,7 +18,6 @@ class Player(Sprite):
         self.turn_speed = 0.1
         self.direction = pygame.Vector2(0, 1)
         self.trail = None
-        self.collision_radius = max(self.size.xy)/2
 
     def update(self, dt, input_manager=None):
         if input_manager:
