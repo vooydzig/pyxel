@@ -6,6 +6,20 @@
 6. camera - póki co mój statek umie pływać tylko po ekranie i jak wypłynie za mapę to ekran się nie przesuwa
 7. minimap
 8. simple wind system: random wind direction and speed, affecting ship movement
+9. rozbudowa cargo -> zwiększ max capacity
+
 ---
 
 6 → 1 → 5 → 4 → ...
+
+
+---
+Jesteś karfografem/odkrywcom i celem gry jest odkrycie całej mapy. Po prostu.
+Zaczynasz w porcie i masz do okoła fog-of-war.
+I z każdą przepłyniętą milą morską rośnie jakiś pasek postępu(np. danego archipelagu).
+Jak odkryjesz powiedzmy 70% danego obszaru to odkrywa się cały i tam jest jakaś cieśnina do kolejnego etapu.
+Mozesz sobie pływać dowolnie po tym obszarze, albo płynąć do kolejnego.
+Jeden obszar to powiedzmy 10% całej mapy.
+Handel i walka to tylko sposoby na pozyskanie złota i zapasów na podróż w dal.
+Trzeba by dodać jakiś rodzaj "kosztu" podróży typu mamy zapasy i one się zuzywają jesli nie zawijamy do portu.
+I np. po odkryciu 100% całego obszaru pojawia się jakis nowy port-baza wypadowa na kolejny obszar

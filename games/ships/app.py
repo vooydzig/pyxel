@@ -3,7 +3,6 @@ import random
 import pygame
 
 from core.app import App
-from core.background import LayeredBackground, BackgroundLayer
 from core.renderer import Background
 from core.ui import widgets
 from games.ships.events import EMPTY_EVENT
@@ -12,17 +11,7 @@ from games.ships.player import Player
 from games.ships.trail import Trail
 from games.ships import conf
 
-class UnchartedMapBackground(LayeredBackground):
-    def __init__(self, asset_manager, background_size):
-        super().__init__()
-        self.add_layers([
-            BackgroundLayer(
-                f'uncharted',
-                asset_manager.get_asset('image', 'map'),
-                pygame.Vector2(0, 0),
-                background_size,
-            )
-        ])
+
 
 class BootyCallsApp(App):
     def initialize(self):
