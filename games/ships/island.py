@@ -45,3 +45,7 @@ class Bootey(Sprite):
     def __init__(self, name, asset=None, position=pygame.Vector2()):
         super().__init__(name, asset, position, pygame.Vector2(64, 64))
         self.events = random.sample(SEA_EVENTS, 1)
+
+    @property
+    def should_cleanup(self):
+        return len(self.events) == 0

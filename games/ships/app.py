@@ -27,8 +27,8 @@ class UnchartedMapBackground(LayeredBackground):
 class BootyCallsApp(App):
     def initialize(self):
         super().initialize()
-        # self.renderer.background = Background(pygame.Color(conf.COLORS['dark_sea']))
-        self.renderer.background = UnchartedMapBackground(self.asset_manager, self.renderer.canvas_size)
+        self.renderer.background = Background(pygame.Color(conf.COLORS['dark_sea']))
+        # self.renderer.background = UnchartedMapBackground(self.asset_manager, self.renderer.canvas_size)
         self.player = Player('player', self.asset_manager.get_asset('image', 'ship (1)'))
         self.player.position = self.renderer.canvas_size / 2
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
@@ -45,6 +45,10 @@ class BootyCallsApp(App):
         super()._update_entities()
         self.handle_collision(self.islands, self.handle_event)
         self.handle_collision(self.bootey, self.handle_event)
+        for entity in self.bootey:
+            if entity.should_cleanup:
+                self.entities.remove(entity)
+                self.bootey.remove(entity)
 
     def handle_collision(self, entities, event_handler):
         min_distance = conf.INFINITY
@@ -56,6 +60,8 @@ class BootyCallsApp(App):
                 nearest_entity = entity
             if d < entity.collision_radius + self.player.collision_radius:
                 self.player.full_stop()
+        if nearest_entity is None:
+            return
         boarding_distance = nearest_entity.collision_radius + self.player.collision_radius
         if min_distance > boarding_distance:
             self.player_is_docked = False
@@ -112,6 +118,6 @@ class BootyCallsApp(App):
 
         self.ui.add_widget('active_event', widgets.Label(
             0, 0 ,
-            self.active_event.description,
+            self.active_event.description + " " + str.join(',', self.active_event.outcomes),
             self.asset_manager.get_asset('font', 'minecraft_18')
         ), relative_position=pygame.Vector2(0, self.screen_size.y-18))

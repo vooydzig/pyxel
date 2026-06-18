@@ -1,0 +1,9 @@
+1. fog of war
+2. cargo ui
+3. match sea event type asset to description
+4. cannons
+5. fishing: trochę jak evenry morskie, ale z 1 rodzajem eventu(łowisz rybę) ale z jakimś timerem, że np co 5 minut odnawia się populacja ryb
+6. camera - póki co mój statek umie pływać tylko po ekranie i jak wypłynie za mapę to ekran się nie przesuwa
+---
+
+6 → 1 → 5 → 4 → ...
