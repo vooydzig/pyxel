@@ -3,18 +3,32 @@ import random
 import pygame
 
 from core.app import App
+from core.background import LayeredBackground, BackgroundLayer
 from core.renderer import Background
 from core.ui import widgets
+from games.ships.events import EMPTY_EVENT
 from games.ships.island import Island, IslandSize, Bootey
 from games.ships.player import Player
 from games.ships.trail import Trail
 from games.ships import conf
 
+class UnchartedMapBackground(LayeredBackground):
+    def __init__(self, asset_manager, background_size):
+        super().__init__()
+        self.add_layers([
+            BackgroundLayer(
+                f'uncharted',
+                asset_manager.get_asset('image', 'map'),
+                pygame.Vector2(0, 0),
+                background_size,
+            )
+        ])
 
 class BootyCallsApp(App):
     def initialize(self):
         super().initialize()
-        self.renderer.background = Background(pygame.Color(conf.COLORS['dark_sea']))
+        # self.renderer.background = Background(pygame.Color(conf.COLORS['dark_sea']))
+        self.renderer.background = UnchartedMapBackground(self.asset_manager, self.renderer.canvas_size)
         self.player = Player('player', self.asset_manager.get_asset('image', 'ship (1)'))
         self.player.position = self.renderer.canvas_size / 2
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
@@ -52,6 +66,7 @@ class BootyCallsApp(App):
         self._update_input()
         if self.active_event:
             if self.input.is_key_held(pygame.K_SPACE):
+                self.active_event.process_outcome(self.player)
                 self.active_event = None
                 self.ui.remove_widget('active_event')
         else:
@@ -90,10 +105,13 @@ class BootyCallsApp(App):
         self.player_is_docked = True
         self.player.full_stop()
         if not entity.events:
-            self.active_event = "Nothing interesting here."
+            self.active_event = EMPTY_EVENT
         else:
             event_id = random.randrange(0, len(entity.events))
             self.active_event = entity.events.pop(event_id)
+
         self.ui.add_widget('active_event', widgets.Label(
-            0, 0 , self.active_event, self.asset_manager.get_asset('font', 'minecraft_18')
+            0, 0 ,
+            self.active_event.description,
+            self.asset_manager.get_asset('font', 'minecraft_18')
         ), relative_position=pygame.Vector2(0, self.screen_size.y-18))

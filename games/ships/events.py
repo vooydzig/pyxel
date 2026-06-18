@@ -1,26 +1,46 @@
+class Event:
+    def __init__(self, description, outcome=""):
+        self.description = description
+        self.outcomes = []
+        if outcome:
+            self.outcomes = outcome.split(',')
+
+    def process_outcome(self, player):
+        if not self.outcomes:
+            return
+        for _outcome in self.outcomes:
+            _outcome.strip()
+            value, cargo_name = _outcome.split()
+            if '+' in value:
+                player.load_cargo(cargo_name, int(value.replace('+', '')))
+            elif '-' in value:
+                player.unload_cargo(cargo_name, int(value.replace('-', '')))
+
+EMPTY_EVENT = Event("Nothing interesting here.", "")
+
 ISLAND_EVENTS = [
-    "You have found a buried treasure.",
-    "You have discovered an abandoned supply cache.",
-    "You have traded goods with friendly islanders.",
-    "You have mapped an uncharted reef.",
-    "You have helped repair a stranded merchant ship.",
-    "You have found a message in a bottle.",
-    "You have uncovered an ancient pirate map.",
-    "You have discovered a forgotten shrine.",
-    "You have found a chest washed ashore.",
-    "You have rescued a sailor from a deserted island.",
-    "You have recovered a captain's lost journal.",
-    "You have encountered a wandering trader.",
-    "You have found fresh water on a remote island.",
-    "You have earned the gratitude of local fishermen.",
-    "You have followed a flock of seabirds to hidden supplies."
+    Event("You have found a buried treasure.", "+100 gold"),
+    Event("You have discovered an abandoned supply cache.", "+10 goods"),
+    Event("You have traded goods with friendly islanders.", "-10 goods, +20 gold"),
+    Event("You have mapped an uncharted reef.", ""),
+    Event("You have helped repair a stranded merchant ship.", "+10 goods"),
+    Event("You have found a message in a bottle.", ""),
+    Event("You have uncovered an ancient pirate map.", ""),
+    Event("You have discovered a forgotten shrine.", ""),
+    Event("You have found a chest washed ashore.", "+20 gold"),
+    Event("You have rescued a sailor from a deserted island.", "+1 crew"),
+    Event("You have recovered a captain's lost journal.", ""),
+    Event("You have encountered a wandering trader.", "-10 gold, +20 goods"),
+    Event("You have found fresh water on a remote island.", ""),
+    Event("You have earned the gratitude of local fishermen.", "+1 crew, +10 goods"),
+    Event("You have followed a flock of seabirds to hidden supplies.", "+10 goods"),
 ]
 
 SEA_EVENTS = [
-    "You have rescued a castaway drifting at sea.",
-    "You have caught a rare fish.",
-    "You have recovered cargo from a shipwreck.",
-    "You have found a message in a bottle.",
-    "You have discovered the remains of a legendary ship.",
-    "You have spotted dolphins guiding your ship.",
+    Event("You have rescued a castaway drifting at sea.", "+1 crew"),
+    Event("You have caught a rare fish.", "+10 goods"),
+    Event("You have recovered cargo from a shipwreck.", "+20 gold, +10 goods, +10 ammo"),
+    Event("You have found a message in a bottle.", ""),
+    Event("You have discovered the remains of a legendary ship.", "+200 gold, +10 goods"),
+    Event("You have spotted dolphins guiding your ship.", ""),
 ]
