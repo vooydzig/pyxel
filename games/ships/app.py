@@ -24,13 +24,22 @@ class BootyCallsApp(App):
         self.entities.append(self.player)
         self.islands = self._setup_islands()
         self.bootey = self._setup_bootey()
+
         self.entities.extend(self.islands)
         self.entities.extend(self.bootey)
 
         self.active_event = None
         self.player_is_docked = False
+        self.camera = pygame.Vector2()
 
     def _update_entities(self):
+        self.camera = self.player.position - self.renderer.canvas_size / 2
+        for entity in self.entities:
+            entity.position -= self.camera
+
+        for point in self.player.trail.points:
+            point -= self.camera
+
         super()._update_entities()
         self.handle_collision(self.islands, self.handle_event)
         self.handle_collision(self.bootey, self.handle_event)

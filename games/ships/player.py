@@ -34,7 +34,6 @@ class Player(Sprite):
         self.position.y += self.direction.y * self.current_speed * dt
 
         self.trail.add_point(self.position.copy())
-
         self.trail.update(dt)
         super().update(dt)
 
