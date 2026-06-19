@@ -42,7 +42,7 @@ class Rain(Entity):
             for i in range(self.particles_count)
         ]
 
-    def render(self, surface:pygame.Surface):
+    def render(self, surface:pygame.Surface, camera=None):
         if self.asset:
             surface.blit(self.asset, self.position)
         for particle in self.particles:
