@@ -25,6 +25,7 @@ class Island(Sprite):
     def __init__(self, name, asset, position, island_size: IslandSize):
         super().__init__(name, asset, position, pygame.Vector2(island_size.value))
         self.events = random.sample(ISLAND_EVENTS, 2)
+        self.visited = False
 
 class BooteyType(enum.Enum):
     CASTAWAY = 'castaway'

@@ -22,6 +22,7 @@ class Player(Sprite):
         self.direction = pygame.Vector2(0, 1)
         self.trail = None
         self.cargo = CargoHold()
+        self.is_docked = False
 
     def update(self, dt, input_manager=None):
         if input_manager:

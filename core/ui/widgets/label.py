@@ -19,4 +19,4 @@ class Label(Widget):
 
     def render(self, surface, camera=None):
         if self.visible:
-                surface.blit(self.text_surface, self._get_screen_position(camera))
+            surface.blit(self.text_surface, self._get_screen_position(camera))

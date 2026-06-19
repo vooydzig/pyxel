@@ -4,28 +4,6 @@ from core.ui import widgets
 from games.ships import conf
 from games.ships.island import Island, IslandSize, Bootey
 
-# # ISLAND_COUNT=3
-# # BOOTEY_COUNT=2
-# #
-# # ISLANDS =[]
-# # BOOTEY =[]
-# # for i in range(ISLAND_COUNT):
-# #     size = random.choice(['tiny', 'small', 'medium'])
-# #     position = (
-# #         random.randint(-WORLD_SIZE, WORLD_SIZE),
-# #         random.randint(-WORLD_SIZE, WORLD_SIZE)
-# #     )
-# #     ISLANDS.append((f"Island {i+1}", position, size))
-# #
-# #
-# # for i in range(BOOTEY_COUNT):
-# #     bootey = random.choice(['shipwreck','castaway','trash','bottle',])
-# #     position = (
-# #         random.randint(-WORLD_SIZE, WORLD_SIZE),
-# #         random.randint(-WORLD_SIZE, WORLD_SIZE)
-# #     )
-# #     BOOTEY.append((f"Island {i + 1}", position, bootey))
-
 class World:
     def __init__(self, size, asset_manager=None):
         self.size = size
