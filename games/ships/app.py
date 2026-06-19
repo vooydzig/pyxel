@@ -6,7 +6,7 @@ from core.app import App
 from core.renderer import Background
 from core.ui import widgets
 from games.ships.events import EMPTY_EVENT
-from games.ships.island import Island, IslandSize, Bootey
+from games.ships.map import World
 from games.ships.player import Player
 from games.ships.trail import Trail
 from games.ships import conf
@@ -17,36 +17,36 @@ class BootyCallsApp(App):
     def initialize(self):
         super().initialize()
         self.renderer.background = Background(pygame.Color(conf.COLORS['dark_sea']))
-        # self.renderer.background = UnchartedMapBackground(self.asset_manager, self.renderer.canvas_size)
+        self.renderer.uncharted = pygame.transform.scale(
+            self.asset_manager.get_asset('image', 'map'),
+            self.renderer.canvas_size,
+        )
+
+        self.map = World(pygame.Vector2(conf.WORLD_SIZE), asset_manager=self.asset_manager)
+
         self.player = Player('player', self.asset_manager.get_asset('image', 'ship (1)'))
-        self.player.position = self.renderer.canvas_size / 2
+        self.player.position = self.map.center.copy()/2
+        self.renderer.camera.position = self.player.position.copy()
+        self.renderer.camera.bound_to(self.map.size)
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
         self.entities.append(self.player)
-        self.islands = self._setup_islands()
-        self.bootey = self._setup_bootey()
 
-        self.entities.extend(self.islands)
-        self.entities.extend(self.bootey)
+        self.entities.extend(self.map.islands)
+        self.entities.extend(self.map.bootey)
 
         self.active_event = None
         self.player_is_docked = False
-        self.camera = pygame.Vector2()
 
     def _update_entities(self):
-        self.camera = self.player.position - self.renderer.canvas_size / 2
-        for entity in self.entities:
-            entity.position -= self.camera
-
-        for point in self.player.trail.points:
-            point -= self.camera
-
+        self.renderer.camera.position = self.player.position - self.renderer.canvas_size / 2
         super()._update_entities()
-        self.handle_collision(self.islands, self.handle_event)
-        self.handle_collision(self.bootey, self.handle_event)
-        for entity in self.bootey:
+        self.renderer.plot_map(self.player.position)
+        self.handle_collision(self.map.islands, self.handle_event)
+        self.handle_collision(self.map.bootey, self.handle_event)
+        for entity in self.map.bootey:
             if entity.should_cleanup:
                 self.entities.remove(entity)
-                self.bootey.remove(entity)
+                self.map.bootey.remove(entity)
 
     def handle_collision(self, entities, event_handler):
         min_distance = conf.INFINITY
@@ -58,6 +58,7 @@ class BootyCallsApp(App):
                 nearest_entity = entity
             if d < entity.collision_radius + self.player.collision_radius:
                 self.player.full_stop()
+                self.renderer.plot_map(entity.position, entity.collision_radius*2)
         if nearest_entity is None:
             return
         boarding_distance = nearest_entity.collision_radius + self.player.collision_radius
@@ -77,31 +78,6 @@ class BootyCallsApp(App):
             self._update_entities()
             self._update_renderer()
             self._update_ui()
-
-    def _setup_islands(self):
-        islands = []
-        for _island in conf.ISLANDS:
-            i = Island(
-                _island[0],
-                self.asset_manager.get_asset('image', 'island_2'),
-                _island[1],
-                IslandSize.from_string(_island[2]),
-            )
-            widget = widgets.Label(0, 0, i.name, self.asset_manager.get_asset('font', 'minecraft_18'))
-            i.add_widget('name', widget, relative_position=pygame.Vector2(-widget.size.x / 2, i.collision_radius))
-            islands.append(i)
-        return islands
-
-    def _setup_bootey(self):
-        bootey = []
-        for _bootey in conf.BOOTEY:
-            b = Bootey(
-                _bootey[0],
-                self.asset_manager.get_asset('image', _bootey[2]),
-                _bootey[1],
-            )
-            bootey.append(b)
-        return bootey
 
     def handle_event(self, entity):
         if self.player_is_docked:

@@ -1,7 +1,7 @@
 FPS = 60
 UNITS_FACTOR = 100
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 800
+SCREEN_WIDTH = 1800
+SCREEN_HEIGHT = 1100
 CANVAS_WIDTH = SCREEN_WIDTH / 4
 CANVAS_HEIGHT = SCREEN_HEIGHT / 4
 INFINITY = 999999999
@@ -13,11 +13,12 @@ COLORS = {
     'dark_sea': (20, 40, 65),
 }
 
+WORLD_SIZE = (SCREEN_WIDTH*2,  SCREEN_HEIGHT*2)
+
 ISLANDS = [
     ("Cape Fear", (100, 100,), 'small'),
-    ("Bona Ventura", (500, 600,), 'tiny'),
+    ("Bona Ventura", (1500, 1000,), 'tiny'),
 ]
-
 
 BOOTEY = [
     ("Shipwreck", (200, 200), "shipwreck"),

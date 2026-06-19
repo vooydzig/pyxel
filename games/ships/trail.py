@@ -13,10 +13,12 @@ class Trail(Sprite):
         self.ttl = 10
         self.timer = 0
 
-    def render(self, surface):
+    def render(self, surface, camera):
         num_points = len(self.points)
         if num_points < 2:
             return
+
+        screen_points = [camera.world_to_screen(point) for point in self.points]
 
         # Loop through pairs of points to build segments
         for i in range(num_points - 1):
@@ -28,7 +30,7 @@ class Trail(Sprite):
             current_alpha = int(255 * age_factor)
 
             # Math for distance and angle
-            diff = pygame.Vector2(self.points[i + 1] - self.points[i])
+            diff = pygame.Vector2(screen_points[i + 1] - screen_points[i])
             distance = diff.length()
 
             if distance < 1:
@@ -40,8 +42,8 @@ class Trail(Sprite):
             scaled_texture.set_alpha(current_alpha)
             rotated_texture = pygame.transform.rotate(scaled_texture, angle)
             rect = rotated_texture.get_rect()
-            x1, y1 = self.points[i]
-            x2, y2 = self.points[i + 1]
+            x1, y1 = screen_points[i]
+            x2, y2 = screen_points[i + 1]
             rect.center = ((x1 + x2) // 2, (y1 + y2) // 2)
             surface.blit(rotated_texture, rect.topleft)
 

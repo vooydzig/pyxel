@@ -37,15 +37,16 @@ class Player(Sprite):
         self.trail.update(dt)
         super().update(dt)
 
-    def render(self, surface):
+    def render(self, surface, camera):
         # pygame.draw.circle(surface, pygame.Color(conf.COLORS['green']), self.position, self.collision_radius)
-        self.trail.render(surface)
-        self._blit_rotated(surface)
-        self.gui.render(surface)
+        self.trail.render(surface, camera)
+        self._blit_rotated(surface, camera)
+        self.gui.render(surface, camera)
 
-    def _blit_rotated(self, surface):
+    def _blit_rotated(self, surface, camera):
         rotated_image = pygame.transform.rotate(self.asset, self.current_angle)
-        new_rect = rotated_image.get_rect(center=rotated_image.get_rect(center=self.position).center)
+        position = camera.world_to_screen(self.position)
+        new_rect = rotated_image.get_rect(center=rotated_image.get_rect(center=position).center)
         surface.blit(rotated_image, new_rect)
 
     def full_stop(self):

@@ -32,7 +32,7 @@ class AssetManager:
                     self._load_font(name, filepath, 18)  # Default size
 
     def _load_image(self, name:str, path:str):
-        self.assets['image'][name] = image.load(path)
+        self.assets['image'][name] = image.load(path).convert_alpha()
 
     def _load_font(self, name:str, font_name:str, font_size:int):
         self.assets['font'][name] = pygame.font.Font(font_name, font_size)
