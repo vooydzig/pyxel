@@ -10,5 +10,5 @@ class Entity:
     def update(self, dt, input_manager=None):
         pass
 
-    def render(self, surface):
+    def render(self, surface, camera=None):
         pass

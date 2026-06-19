@@ -17,6 +17,6 @@ class Label(Widget):
         self.text_surface = self.font.render(self.text, True, self.color)
         self.size = pygame.Vector2(self.text_surface.get_width(), self.text_surface.get_height())
 
-    def render(self, surface):
+    def render(self, surface, camera=None):
         if self.visible:
-            surface.blit(self.text_surface, self.position)
+                surface.blit(self.text_surface, self._get_screen_position(camera))

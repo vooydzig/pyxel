@@ -12,7 +12,7 @@ class Star(Entity):
         self.size = 4
         self.turn_delta = pygame.Vector2()
 
-    def render(self, surface):
+    def render(self, surface, camera):
         surface_size = pygame.math.Vector2(surface.get_size())
         coords_2d = self.to_screen_coords(self.position, self.position.z, surface_size)
         prev_coords_2d = self.to_screen_coords(

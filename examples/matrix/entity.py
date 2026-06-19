@@ -94,7 +94,7 @@ class Stream(Entity):
             ))
             delta -= self.font.size(self.characters[-1].text)[1]
 
-    def render(self, surface):
+    def render(self, surface, camera=None):
         for character in self.characters:
             character.render(surface)
 

@@ -43,6 +43,6 @@ class GUIManager:
             parent_position = self.parent.position
         return  parent_position + self._widget_relative_positions[widget_name]
 
-    def render(self, surface):
+    def render(self, surface, camera=None):
         for widget in self._widgets.values():
-            widget.render(surface)
+            widget.render(surface, camera)

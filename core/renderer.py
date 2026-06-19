@@ -1,5 +1,6 @@
 import pygame
 
+from core.camera import Camera
 from core.entity import Entity
 from core.ui.widgets import Widget
 
@@ -13,9 +14,9 @@ class Background:
 class BaseRenderer:
     def __init__(self, *args, **kwargs):
         self.screen = None
-        self.screen_size = None
         self._background = None
         self._default_background = Background()
+        self.camera = None
 
     @property
     def canvas_size(self):
@@ -33,7 +34,7 @@ class BaseRenderer:
 
     def set_destiation(self, screen: pygame.Surface):
         self.screen = screen
-        self.screen_size = pygame.Vector2(screen.get_size())
+        self.camera = Camera(pygame.Vector2(), self.canvas_size)
 
     def render(self, entities: list[Entity], gui_widgets: list[Widget]):
         self._render_background(self.screen)
@@ -49,7 +50,7 @@ class BaseRenderer:
 
     def _render_entities(self, entities:list[Entity], frame:pygame.Surface):
         for entity in entities:
-            entity.render(frame)
+            entity.render(frame, self.camera)
 
     def _render_gui(self, gui_widgets:list[Widget], frame: pygame.Surface):
         for widget in gui_widgets:
@@ -88,17 +89,9 @@ class UpscaledRenderer(BaseRenderer):
     def update(self, dt:float):
         pass
 
-    def _render_entities(self, entities:list[Entity], frame: pygame.Surface):
-        for entity in entities:
-            entity.render(frame)
-
-    def _render_gui(self, gui_widgets:list[Widget], frame: pygame.Surface):
-        for widget in gui_widgets:
-            widget.render(frame)
-
     def _post_process(self, frame: pygame.Surface):
         self.screen.blit(frame, (0, 0))
-        pygame.display.flip()
+        super()._post_process()
 
 
 class PutPixelRenderer(BaseRenderer):

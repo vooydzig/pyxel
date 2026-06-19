@@ -11,6 +11,11 @@ class Widget:
     def update(self, dt):
         pass
 
-    def render(self, surface):
+    def render(self, surface, camera=None):
         if self.visible:
-            pygame.draw.rect(surface, pygame.Color(255, 0, 0), (*self.position, *self.size), 2)
+            pygame.draw.rect(surface, pygame.Color(255, 0, 0), (*self._get_screen_position(camera), *self.size), 2)
+
+    def _get_screen_position(self, camera):
+        if camera:
+            return camera.world_to_screen(self.position)
+        return self.position
