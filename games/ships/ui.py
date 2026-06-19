@@ -19,7 +19,7 @@ class Counter(Widget):
         super().__init__(*position.xy, *surface_size.xy, 0)
 
         self.value = value
-        self.text_offset = pygame.Vector2(self.icon.get_width()*2, 0)
+        self.text_offset = pygame.Vector2(self.icon.get_width() + 8, self.icon.get_height()/4)
 
     @property
     def value(self):

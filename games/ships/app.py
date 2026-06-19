@@ -41,23 +41,25 @@ class BootyCallsApp(App):
 
     def _setup_hud(self):
         visited = int(len([i for i in self.map.islands if i.visited])/len(self.map.islands) * 100)
-        self.ui.add_widget(f'discovery_conter', Counter(
-            pygame.Vector2(),
-            visited,
-            self.asset_manager.get_asset('font', 'minecraft_18'),
-            pygame.Color(conf.COLORS['white']),
-            pygame.transform.scale(self.asset_manager.get_asset('image', f'map_icon'), pygame.Vector2(14, 14))
-        ), relative_position=pygame.Vector2(50, self.screen_size.y - 350))
+
         for i, cargo_type in enumerate(['gold','crew','ammo','goods'], start=1):
             self.ui.add_widget(f'{cargo_type}_conter', Counter(
                 pygame.Vector2(),
                 getattr(self.player.cargo,cargo_type).current,
                 self.asset_manager.get_asset('font', 'minecraft_18'),
                 pygame.Color(conf.COLORS['white']),
-                pygame.transform.scale(self.asset_manager.get_asset('image', f'{cargo_type}_icon'), pygame.Vector2(14, 14)),
+                pygame.transform.scale(self.asset_manager.get_asset('image', f'{cargo_type}_icon'), pygame.Vector2(32,32)),
                 0,
                 getattr(self.player.cargo, cargo_type).max,
-            ), relative_position=pygame.Vector2(50, self.screen_size.y - 50*i))
+            ), relative_position=pygame.Vector2(self.screen_size.x - 100*i,50))
+
+        self.ui.add_widget(f'discovery_conter', Counter(
+            pygame.Vector2(),
+            visited,
+            self.asset_manager.get_asset('font', 'minecraft_18'),
+            pygame.Color(conf.COLORS['white']),
+            pygame.transform.scale(self.asset_manager.get_asset('image', f'map_icon'), pygame.Vector2(32, 32))
+        ), relative_position=pygame.Vector2(50, 50))
 
     def _update_entities(self):
         self.renderer.camera.position = self.player.position - self.renderer.canvas_size / 2
