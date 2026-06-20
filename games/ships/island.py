@@ -34,18 +34,19 @@ class BooteyType(enum.Enum):
     BOTTLE = 'bottle'
 
     @classmethod
-    def from_string(cls, size_str):
-        size_str = size_str.upper()
-        if size_str in cls.__members__:
-            return cls[size_str]
+    def from_string(cls, type_str):
+        type_str = type_str.upper()
+        if type_str in cls.__members__:
+            return cls[type_str]
         else:
-            raise ValueError(f"Invalid IslandSize string: {size_str}")
+            raise ValueError(f"Invalid BooteyType string: {type_str}")
 
 
 class Bootey(Sprite):
-    def __init__(self, name, asset=None, position=pygame.Vector2()):
+    def __init__(self, name, position=pygame.Vector2(), asset=None, type=None):
         super().__init__(name, asset, position, pygame.Vector2(64, 64))
-        self.events = random.sample(SEA_EVENTS, 1)
+        self.type = BooteyType.from_string(type)
+        self.events = random.sample(SEA_EVENTS[self.type.value], 1)
 
     @property
     def should_cleanup(self):

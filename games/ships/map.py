@@ -31,8 +31,9 @@ class World:
         for _bootey in conf.BOOTEY:
             b = Bootey(
                 _bootey[0],
-                self.asset_manager.get_asset('image', _bootey[2]),
                 pygame.Vector2(_bootey[1]),
+                self.asset_manager.get_asset('image', _bootey[2]),
+                _bootey[2]
             )
             bootey.append(b)
         return bootey

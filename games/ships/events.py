@@ -36,11 +36,21 @@ ISLAND_EVENTS = [
     Event("You have followed a flock of seabirds to hidden supplies.", "+10 goods"),
 ]
 
-SEA_EVENTS = [
-    Event("You have rescued a castaway drifting at sea.", "+1 crew"),
-    Event("You have caught a rare fish.", "+10 goods"),
-    Event("You have recovered cargo from a shipwreck.", "+20 gold, +10 goods, +10 ammo"),
-    Event("You have found a message in a bottle.", ""),
-    Event("You have discovered the remains of a legendary ship.", "+200 gold, +10 goods"),
-    Event("You have spotted dolphins guiding your ship.", ""),
-]
+SEA_EVENTS = {
+    'castaway': [
+        Event("You have rescued a castaway drifting at sea.", "+1 crew"),
+
+    ],
+    'trash': [
+        Event("You have caught a rare fish.", "+10 goods"),
+        Event("You have spotted dolphins guiding your ship.", ""),
+    ],
+    'shipwreck': [
+        Event("You have recovered cargo from a shipwreck.", "+20 gold, +10 goods, +10 ammo"),
+        Event("You have discovered the remains of a legendary ship.", "+200 gold, +10 goods"),
+
+    ],
+    'bottle': [
+        Event("You have found a message in a bottle.", ""),
+    ]
+}

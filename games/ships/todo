@@ -1,12 +1,10 @@
-3. match sea event type asset to description
-4. cannons
-5. fishing: trochę jak evenry morskie, ale z 1 rodzajem eventu(łowisz rybę) ale z jakimś timerem, że np co 5 minut odnawia się populacja ryb
-7. minimap
-8. simple wind system: random wind direction and speed, affecting ship movement
-9. rozbudowa cargo -> zwiększ max capacity
----
-
-5 → 4 → ...
+*  fishing: trochę jak evenry morskie, ale z 1 rodzajem eventu(łowisz rybę) ale z jakimś timerem, że np co 5 minut odnawia się populacja ryb
+*  cannons
+*  minimap
+*  simple wind system: random wind direction and speed, affecting ship movement
+*  rozbudowa cargo -> zwiększ max capacity
+*  port i dokowanie
+* "general directions" indicator... czyli pokauje na ramce ekranu w którą stronę jest kolejny etap/port, żeby nie trzeba było zgadywać na nieodkrytej mapie
 
 
 ---
