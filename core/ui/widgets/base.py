@@ -2,9 +2,9 @@ import pygame
 
 
 class Widget:
-    def __init__(self, x, y, width, height, z_index=0):
-        self.position = pygame.Vector2(x, y)
-        self.size = pygame.Vector2(width, height)
+    def __init__(self, position, size, z_index=0):
+        self.position = position
+        self.size = size
         self.z_index = z_index
         self.visible = True
 

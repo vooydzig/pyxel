@@ -21,7 +21,7 @@ class World:
                 pygame.Vector2(_island[1]),
                 IslandSize.from_string(_island[2]),
             )
-            widget = widgets.Label(0, 0, i.name, self.asset_manager.get_asset('font', 'minecraft_18'))
+            widget = widgets.Label(pygame.Vector2(), i.name, self.asset_manager.get_asset('font', 'minecraft_18'))
             i.add_widget('name', widget, relative_position=pygame.Vector2(-widget.size.x / 2, i.collision_radius))
             islands.append(i)
         return islands

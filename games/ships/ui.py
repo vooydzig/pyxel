@@ -16,7 +16,7 @@ class Counter(Widget):
         surface_size = self.surface_size()
         self.text_surface = None
 
-        super().__init__(*position.xy, *surface_size.xy, 0)
+        super().__init__(position, surface_size, 0)
 
         self.value = value
         self.text_offset = pygame.Vector2(self.icon.get_width() + 8, self.icon.get_height()/4)
@@ -46,3 +46,21 @@ class Counter(Widget):
         if self.visible:
             surface.blit(self.icon, self._get_screen_position(camera))
             surface.blit(self.text_surface, self._get_screen_position(camera) + self.text_offset)
+
+
+class Icon(Widget):
+    def __init__(self, position, icon):
+        self.icon = icon
+        self.current_angle = 0
+        super().__init__(position, icon.get_size(), z_index=99)
+
+    def render(self, surface, camera=None):
+        if self.visible:
+            self._blit_rotated(surface, camera)
+            # surface.blit(self.icon, self._get_screen_position(camera))
+
+    def _blit_rotated(self, surface, camera):
+        rotated_image = pygame.transform.rotate(self.icon, self.current_angle)
+        position = camera.world_to_screen(self.position)
+        new_rect = rotated_image.get_rect(center=rotated_image.get_rect(center=position).center)
+        surface.blit(rotated_image, new_rect)

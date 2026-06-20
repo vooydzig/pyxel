@@ -4,9 +4,9 @@ from core.ui.widgets import Widget
 
 
 class Label(Widget):
-    def __init__(self, x, y, text, font, color=pygame.Color(255, 255, 255), z_index=0):
+    def __init__(self, position, text, font, color=pygame.Color(255, 255, 255), z_index=0):
         text_surface = font.render(text, True, color)
-        super().__init__(x, y, text_surface.get_width(), text_surface.get_height(), z_index)
+        super().__init__(position, pygame.Vector2(text_surface.get_size()), z_index)
         self.text = text
         self.font = font
         self.color = color

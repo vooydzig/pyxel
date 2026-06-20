@@ -3,6 +3,7 @@ import random
 import pygame
 
 from core.app import App
+from core.entity import Entity
 from core.renderer import Background
 from core.ui import widgets
 from games.ships.events import EMPTY_EVENT
@@ -10,7 +11,7 @@ from games.ships.map import World
 from games.ships.player import Player
 from games.ships.trail import Trail
 from games.ships import conf
-from games.ships.ui import Counter
+from games.ships.ui import Counter, Icon
 
 
 class BootyCallsApp(App):
@@ -26,7 +27,7 @@ class BootyCallsApp(App):
 
         self.map = World(pygame.Vector2(conf.WORLD_SIZE), asset_manager=self.asset_manager)
         self.player = Player('player', self.asset_manager.get_asset('image', 'ship (1)'))
-        self.player.position = self.map.center.copy()/2
+        self.player.position = self.map.center.copy() / 2
         self.player.trail = Trail(self.asset_manager.get_asset('image', 'wake'), self.player.position)
 
         self.renderer.camera.position = self.player.position.copy()
@@ -37,21 +38,24 @@ class BootyCallsApp(App):
         self.entities.extend(self.map.islands)
         self.entities.extend(self.map.bootey)
 
+        self.update_indicators = True
         self._setup_hud()
+        assert self.player == self.entities[0]
 
     def _setup_hud(self):
-        visited = int(len([i for i in self.map.islands if i.visited])/len(self.map.islands) * 100)
+        visited = int(len([i for i in self.map.islands if i.visited]) / len(self.map.islands) * 100)
 
-        for i, cargo_type in enumerate(['gold','crew','ammo','goods'], start=1):
+        for i, cargo_type in enumerate(['gold', 'crew', 'ammo', 'goods'], start=1):
             self.ui.add_widget(f'{cargo_type}_conter', Counter(
                 pygame.Vector2(),
-                getattr(self.player.cargo,cargo_type).current,
+                getattr(self.player.cargo, cargo_type).current,
                 self.asset_manager.get_asset('font', 'minecraft_18'),
                 pygame.Color(conf.COLORS['white']),
-                pygame.transform.scale(self.asset_manager.get_asset('image', f'{cargo_type}_icon'), pygame.Vector2(32,32)),
+                pygame.transform.scale(self.asset_manager.get_asset('image', f'{cargo_type}_icon'),
+                                       pygame.Vector2(32, 32)),
                 0,
                 getattr(self.player.cargo, cargo_type).max,
-            ), relative_position=pygame.Vector2(self.screen_size.x - 100*i,50))
+            ), relative_position=pygame.Vector2(self.screen_size.x - 100 * i, 50))
 
         self.ui.add_widget(f'discovery_conter', Counter(
             pygame.Vector2(),
@@ -60,6 +64,15 @@ class BootyCallsApp(App):
             pygame.Color(conf.COLORS['white']),
             pygame.transform.scale(self.asset_manager.get_asset('image', f'map_icon'), pygame.Vector2(32, 32))
         ), relative_position=pygame.Vector2(50, 50))
+
+        for island in self.map.islands:
+            self.player.add_widget(
+                f'island_indicator_{island.slug}', Icon(
+                    pygame.Vector2(),
+                    pygame.transform.scale(self.asset_manager.get_asset('image', 'up_arrow'), pygame.Vector2(32, 32))
+                ), relative_position=pygame.Vector2()
+            )
+
 
     def _update_entities(self):
         self.renderer.camera.position = self.player.position - self.renderer.canvas_size / 2
@@ -77,9 +90,30 @@ class BootyCallsApp(App):
         visited = int(len([i for i in self.map.islands if i.visited]) / len(self.map.islands) * 100)
         w = self.ui.get_widget('discovery_conter')
         w.value = visited
-        for i, cargo_type in enumerate(['gold','crew','ammo','goods'], start=1):
+        for i, cargo_type in enumerate(['gold', 'crew', 'ammo', 'goods'], start=1):
             w = self.ui.get_widget(f'{cargo_type}_conter')
-            w.value = getattr(self.player.cargo,cargo_type).current
+            w.value = getattr(self.player.cargo, cargo_type).current
+
+        self._update_uncharted_island_indicators()
+
+    def _update_uncharted_island_indicators(self):
+        for i in self.map.islands:
+            widget_name = f'island_indicator_{i.slug}'
+            if i.visited:
+                try:
+                    self.player.gui.remove_widget(widget_name)
+                except ValueError:
+                    pass
+                continue
+
+            direction = (i.position - self.player.position).normalize()
+            self.player.gui.move_widget(
+                widget_name,
+                direction * 100
+            )
+
+            rotation = direction.as_polar()[1] + 90
+            self.player.gui.get_widget(widget_name).current_angle = -rotation
 
     def handle_collision(self, entities, event_handler):
         min_distance = conf.INFINITY
@@ -91,7 +125,7 @@ class BootyCallsApp(App):
                 nearest_entity = entity
             if d < entity.collision_radius + self.player.collision_radius:
                 self.player.full_stop()
-                self.renderer.plot_map(entity.position, entity.collision_radius*2)
+                self.renderer.plot_map(entity.position, entity.collision_radius * 2)
         if nearest_entity is None:
             return
         boarding_distance = nearest_entity.collision_radius + self.player.collision_radius
@@ -124,10 +158,10 @@ class BootyCallsApp(App):
             self.active_event = entity.events.pop(event_id)
 
         self.ui.add_widget('active_event', widgets.Label(
-            0, 0 ,
+            pygame.Vector2(),
             self.active_event.description + " " + str.join(',', self.active_event.outcomes),
             self.asset_manager.get_asset('font', 'minecraft_18')
-        ), relative_position=pygame.Vector2(0, self.screen_size.y-18))
+        ), relative_position=pygame.Vector2(0, self.screen_size.y - 18))
 
     def handle_island_event(self, island):
         island.visited = True

@@ -7,6 +7,10 @@ class Entity:
         self.asset = asset
         self.position = position
 
+    @property
+    def slug(self):
+        return self.name.lower().replace(' ', '_')
+
     def update(self, dt, input_manager=None):
         pass
 

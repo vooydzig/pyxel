@@ -17,6 +17,7 @@ class FogOfWarRenderer(BaseRenderer):
 
     def render(self, entities, gui_widgets):
         world = self.screen.copy()
+        player = entities[0]
         self._render_background(world)
         self._render_entities(entities, world)
         discovered_world = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
@@ -25,4 +26,5 @@ class FogOfWarRenderer(BaseRenderer):
         self.screen.blit(self.uncharted_background, (0, 0))
         self.screen.blit(discovered_world, (0, 0))
         self._render_gui(gui_widgets, self.screen)
+        player.gui.render(self.screen, self.camera)
         self._post_process(self.screen)
