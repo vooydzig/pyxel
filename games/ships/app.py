@@ -84,6 +84,7 @@ class BootyCallsApp(App):
             if entity.should_cleanup:
                 self.entities.remove(entity)
                 self.map.bootey.remove(entity)
+        self.handle_map_bounds(self.map.size)
 
     def _update_ui(self):
         super()._update_ui()
@@ -133,6 +134,20 @@ class BootyCallsApp(App):
             self.player.is_docked = False
         if min_distance < boarding_distance and self.input.is_key_held(pygame.K_e):
             event_handler(nearest_entity)
+
+    def handle_map_bounds(self, map_size):
+        if self.player.position.x < self.player.collision_radius:
+            self.player.position.x = self.player.collision_radius
+            self.player.full_stop()
+        elif self.player.position.x > map_size.x - self.player.collision_radius:
+            self.player.position.x = map_size.x - self.player.collision_radius
+            self.player.full_stop()
+        if self.player.position.y < self.player.collision_radius:
+            self.player.position.y = self.player.collision_radius
+            self.player.full_stop()
+        elif self.player.position.y > map_size.y - self.player.collision_radius:
+            self.player.position.y = map_size.y - self.player.collision_radius
+            self.player.full_stop()
 
     def update(self):
         self._update_input()
