@@ -3,7 +3,6 @@ import random
 import pygame
 
 from core.app import App
-from core.entity import Entity
 from core.renderer import Background
 from core.ui import widgets
 from games.ships.events import EMPTY_EVENT

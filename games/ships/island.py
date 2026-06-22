@@ -43,9 +43,9 @@ class BooteyType(enum.Enum):
 
 
 class Bootey(Sprite):
-    def __init__(self, name, position=pygame.Vector2(), asset=None, type=None):
+    def __init__(self, name, position=pygame.Vector2(), asset=None, type:BooteyType=None):
         super().__init__(name, asset, position, pygame.Vector2(64, 64))
-        self.type = BooteyType.from_string(type)
+        self.type = type
         self.events = random.sample(SEA_EVENTS[self.type.value], 1)
 
     @property
